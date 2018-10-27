@@ -1,6 +1,6 @@
 # torchstat
-This is a lightweight neural network analyser based on PyTorch.
-It is designed to make getting started quick and easy, with the ability to debug your networks.
+This is a lightweight neural network analyzer based on PyTorch.
+It is designed to make building your networks quick and easy, with the ability to debug them.
 **Note**: This repository is currently under development. Therefore, some APIs might be changed.
 
 This tools can show
@@ -22,19 +22,19 @@ Otherwise you need to import torchstat as a module.
 
 ### CLI tool
 ```bash
-$ torchstat --file example.py --model Net --size 3x224x224
+$ torchstat --file example.py --model Net
 [MAdd]: Dropout2d is not supported!
 [Flops]: Dropout2d is not supported!
-      module name  input shape output shape  parameter quantity inference memory(MB)           MAdd         Flops duration percent
-0           conv1    3 224 224   10 220 220               760.0                 1.85   72,600,000.0  36,784,000.0           60.07%
-1           conv2   10 110 110   20 106 106              5020.0                 0.86  112,360,000.0  56,404,720.0           34.83%
-2      conv2_drop   20 106 106   20 106 106                 0.0                 0.86            0.0           0.0            0.32%
-3             fc1        56180           50           2809050.0                 0.00    5,617,950.0   2,809,000.0            4.55%
-4             fc2           50           10               510.0                 0.00          990.0         500.0            0.23%
-total                                                 2815340.0                 3.56  190,578,940.0  95,998,220.0          100.00%
-==================================================================================================================================
+      module name  input shape output shape     params memory(MB)           MAdd         Flops duration[%]
+0           conv1    3 224 224   10 220 220      760.0       1.85   72,600,000.0  36,784,000.0      60.11%
+1           conv2   10 110 110   20 106 106     5020.0       0.86  112,360,000.0  56,404,720.0      35.08%
+2      conv2_drop   20 106 106   20 106 106        0.0       0.86            0.0           0.0       0.34%
+3             fc1        56180           50  2809050.0       0.00    5,617,950.0   2,809,000.0       4.25%
+4             fc2           50           10      510.0       0.00          990.0         500.0       0.22%
+total                                        2815340.0       3.56  190,578,940.0  95,998,220.0     100.00%
+==========================================================================================================
 Total params: 2,815,340
-----------------------------------------------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------------------
 Total memory: 3.56MB
 Total MAdd: 190.58MMAdd
 Total Flops: 96.0MFlops
