@@ -23,7 +23,10 @@ def main():
         spec.loader.exec_module(module)
         model = getattr(module, args.model)()
     except Exception:
+        import traceback
         print(f'Tried to import {args.model} from {args.file}. but failed.')
+        traceback.print_exc()
+
         import sys; sys.exit()
 
     input_size = tuple(int(x) for x in args.size.split('x'))

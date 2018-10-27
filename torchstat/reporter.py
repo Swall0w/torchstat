@@ -5,14 +5,17 @@ pd.set_option('display.width', 1000)
 pd.set_option('display.max_rows', 10000)
 pd.set_option('display.max_columns', 10000)
 
-def flops_to_string(flops):
-    if flops // 10**9 > 0:
-        return str(round(flops / 10.**9, 2)) + 'GFlops'
-    elif flops // 10**6 > 0:
-        return str(round(flops / 10.**6, 2)) + 'MFlops'
-    elif flops // 10**3 > 0:
-        return str(round(flops / 10.**3, 2)) + 'KFlops'
-    return str(flops) + 'Flops'
+
+def round_value(value):
+    if value // 10**12 > 0:
+        return str(round(value / 10.**12, 2)) + 'T'
+    elif value // 10**9 > 0:
+        return str(round(value / 10.**9, 2)) + 'G'
+    elif value // 10**6 > 0:
+        return str(round(value / 10.**6, 2)) + 'M'
+    elif value // 10**3 > 0:
+        return str(round(value / 10.**3, 2)) + 'K'
+    return str(value)
 
 
 def report_format(collected_nodes):
@@ -63,7 +66,6 @@ def report_format(collected_nodes):
     summary += "-" * len(str(df).split('\n')[0])
     summary += '\n'
     summary += "Total memory: {:.2f}MB\n".format(total_memory)
-    summary += "Total MAdd: {:,}\n".format(total_operation_quantity)
-#    summary += "Total Flops: {:,}\n".format(total_flops)
-    summary += "Total Flops: {}\n".format(flops_to_string(total_flops))
+    summary += "Total MAdd: {}MAdd\n".format(round_value(total_operation_quantity))
+    summary += "Total Flops: {}Flops\n".format(round_value(total_flops))
     return summary
