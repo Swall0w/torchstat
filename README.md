@@ -2,10 +2,14 @@
 
 ## Features
 - [ ] FLOPs
-- [ ] Number of Parameters
+- [x] Number of Parameters
 - [ ] Model sammary (Darknet-like?)
-- [ ] Total memory
-- [ ] Madds
+- [x] Total memory
+- [x] Madds
+- [ ] Input Size
+- [ ] Forward/backward pass size
+- [ ] Params Size
+- [ ] Estimated Total Size
 
 
 Inspired by these wonderful implementations.
