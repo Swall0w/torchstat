@@ -1,25 +1,80 @@
 # torchstat
+This is a lightweight neural network analyser based on PyTorch.
+It is designed to make getting started quick and easy, with the ability to debug your networks.
+**Note**: This repository is currently under development. Therefore, some APIs might be changed.
+
+This tools can show
+
+* Total number of network parameters
+* Theoretical amount of floating point arithmetics (FLOPs)
+* Theoretical amount of multiply-adds (MAdd)
+* Memory usage
+
+## Installing
+Install and update using **setup.py** after cloning this repository.
+```bash
+$ python3 setup.py install
+```
+
+## A Simple Example
+If you want to run the torchstat asap, you can call it as a CLI tool if your network exists in a script.
+Otherwise you need to import torchstat as a module.
+
+### CLI tool
+```bash
+$ torchstat --file example.py --model Net --size 3x224x224
+[MAdd]: Dropout2d is not supported!
+[Flops]: Dropout2d is not supported!
+      module name  input shape output shape  parameter quantity inference memory(MB)           MAdd         Flops duration percent
+0           conv1    3 224 224   10 220 220               760.0                 1.85   72,600,000.0  36,784,000.0           60.07%
+1           conv2   10 110 110   20 106 106              5020.0                 0.86  112,360,000.0  56,404,720.0           34.83%
+2      conv2_drop   20 106 106   20 106 106                 0.0                 0.86            0.0           0.0            0.32%
+3             fc1        56180           50           2809050.0                 0.00    5,617,950.0   2,809,000.0            4.55%
+4             fc2           50           10               510.0                 0.00          990.0         500.0            0.23%
+total                                                 2815340.0                 3.56  190,578,940.0  95,998,220.0          100.00%
+==================================================================================================================================
+Total params: 2,815,340
+----------------------------------------------------------------------------------------------------------------------------------
+Total memory: 3.56MB
+Total MAdd: 190.58MMAdd
+Total Flops: 96.0MFlops
+```
+
+If you're not sure how to use a specific command, run the command with the -h or –help switches.
+You'll see usage information and a list of options you can use with the command.
+
+### Module
+```python
+from torchstat import stat
+from torchvision.models as models
+
+model = models.resnet18()
+report = stat(model, (3, 224, 224))
+print(report)
+```
 
 ## Features
 - [x] FLOPs
 - [x] Number of Parameters
 - [x] Total memory
-- [x] Madds
-- [ ] Model sammary (Darknet-like?)
-- [ ] Input Size (MB, Shape)
-- [ ] Output Size (Shape)
-- [ ] Forward/backward pass size
-- [ ] Params Size
-- [ ] Estimated Total Size
-- [ ] Report rounded score
-- [ ] Report score table
-- [ ] Report layer-wise score
+- [x] Madd(FMA)
+- [ ] Model summary(detail, layer-wise)
+- [ ] Export score table
+- [ ] MemRead
+- [ ] MemWrite
+
+For the supported layers, check out [the details](./detail.md).
 
 
-Inspired by these wonderful implementations.
-* [pytorch-segmentation-detection](https://github.com/warmspringwinds/pytorch-segmentation-detection/blob/master/pytorch_segmentation_detection/utils/flops_benchmark.py)
-* [flops_counter.ipynb](https://github.com/warmspringwinds/pytorch-segmentation-detection/blob/d5df5e066fe9c6078d38b26527d93436bf869b1c/pytorch_segmentation_detection/recipes/pascal_voc/segmentation/flops_counter.ipynb)
+## Requirements
+* Python 3.6+
+* Pytorch 0.4.0+
+* Pandas 0.23.4+
+* NumPy 1.14.3+
+
+## References
+Thanks to @sovrasov for the initial version of flops computation, @ceykmc for the backbone of scripts.
 * [flops-counter.pytorch](https://github.com/sovrasov/flops-counter.pytorch)
 * [pytorch_model_summary](https://github.com/ceykmc/pytorch_model_summary)
-
-We checked our result comparing to [convnet-burden](https://github.com/albanie/convnet-burden).
+* [chainer_computational_cost](https://github.com/belltailjp/chainer_computational_cost)
+* [convnet-burden](https://github.com/albanie/convnet-burden).

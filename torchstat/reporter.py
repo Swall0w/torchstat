@@ -35,26 +35,26 @@ def report_format(collected_nodes):
                      parameter_quantity, inference_memory, MAdd, duration, Flops])
     df = pd.DataFrame(data)
     df.columns = ['module name', 'input shape', 'output shape',
-                  'parameter quantity', 'inference memory(MB)',
+                  'params', 'memory(MB)',
                   'MAdd', 'duration', 'Flops']
-    df['duration percent'] = df['duration'] / (df['duration'].sum() + 1e-7)
-    total_parameters_quantity = df['parameter quantity'].sum()
-    total_memory = df['inference memory(MB)'].sum()
+    df['duration[%]'] = df['duration'] / (df['duration'].sum() + 1e-7)
+    total_parameters_quantity = df['params'].sum()
+    total_memory = df['memory(MB)'].sum()
     total_operation_quantity = df['MAdd'].sum()
     total_flops = df['Flops'].sum()
-    total_duration = df['duration percent'].sum()
+    total_duration = df['duration[%]'].sum()
     del df['duration']
 
     # Add Total row
     total_df = pd.Series([total_parameters_quantity, total_memory, total_operation_quantity, total_flops, total_duration],
-                         index=['parameter quantity', 'inference memory(MB)', 'MAdd', 'Flops', 'duration percent'],
+                         index=['params', 'memory(MB)', 'MAdd', 'Flops', 'duration[%]'],
                          name='total')
     df = df.append(total_df)
 
     df = df.fillna(' ')
-    df['inference memory(MB)'] = df['inference memory(MB)'].apply(
+    df['memory(MB)'] = df['memory(MB)'].apply(
         lambda x: '{:.2f}'.format(x))
-    df['duration percent'] = df['duration percent'].apply(lambda x: '{:.2%}'.format(x))
+    df['duration[%]'] = df['duration[%]'].apply(lambda x: '{:.2%}'.format(x))
     df['MAdd'] = df['MAdd'].apply(lambda x: '{:,}'.format(x))
     df['Flops'] = df['Flops'].apply(lambda x: '{:,}'.format(x))
 

@@ -1,5 +1,5 @@
 __copyright__ = 'Copyright (C) 2018 Swall0w'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = 'Swall0w'
 __url__ = 'https://github.com/Swall0w/torchstat'
 
