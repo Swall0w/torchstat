@@ -157,5 +157,5 @@ def compute_madd(module, inp, out):
     elif isinstance(module, nn.Bilinear):
         return compute_Bilinear_madd(module, inp[0], inp[1], out)
     else:
-        print(f"{type(module).__name__} is unsupported!")
+        print(f"[MAdd]: {type(module).__name__} is unsupported!")
         return 0

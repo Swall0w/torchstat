@@ -39,6 +39,7 @@ def convert_leaf_modules_to_stat_tree(leaf_modules):
                 node.parameter_quantity = leaf_module.parameter_quantity.numpy()[0]
                 node.inference_memory = leaf_module.inference_memory.numpy()[0]
                 node.MAdd = leaf_module.MAdd.numpy()[0]
+                node.Flops = leaf_module.Flops.numpy()[0]
                 node.duration = leaf_module.duration.numpy()[0]
     return StatTree(root_node)
 

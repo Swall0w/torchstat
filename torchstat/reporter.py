@@ -17,17 +17,19 @@ def report_format(collected_nodes):
         parameter_quantity = node.parameter_quantity
         inference_memory = node.inference_memory
         MAdd = node.MAdd
+        Flops = node.Flops
         duration = node.duration
         data.append([name, input_shape, output_shape,
-                     parameter_quantity, inference_memory, MAdd, duration])
+                     parameter_quantity, inference_memory, MAdd, duration, Flops])
     df = pd.DataFrame(data)
     df.columns = ['module name', 'input shape', 'output shape',
                   'parameter quantity', 'inference memory(MB)',
-                  'MAdd', 'duration']
+                  'MAdd', 'duration', 'Flops']
     df['duration percent'] = df['duration'] / (df['duration'].sum() + 1e-7)
     total_parameters_quantity = df['parameter quantity'].sum()
     total_memory = df['inference memory(MB)'].sum()
     total_operation_quantity = df['MAdd'].sum()
+    total_flops = df['Flops'].sum()
     del df['duration']
     df = df.fillna(' ')
     df['inference memory(MB)'] = df['inference memory(MB)'].apply(
@@ -38,9 +40,13 @@ def report_format(collected_nodes):
     summary = str(df) + '\n'
     summary += "=" * len(str(df).split('\n')[0])
     summary += '\n'
-    summary += "total parameters quantity: {:,}\n".format(total_parameters_quantity)
-    summary += "total memory: {:.2f}MB\n".format(total_memory)
-    summary += "total MAdd: {:,}\n".format(total_operation_quantity)
+    summary += "Total params: {:,}\n".format(total_parameters_quantity)
+
+    summary += "-" * len(str(df).split('\n')[0])
+    summary += '\n'
+    summary += "Total memory: {:.2f}MB\n".format(total_memory)
+    summary += "Total MAdd: {:,}\n".format(total_operation_quantity)
+    summary += "Total Flops: {:,}\n".format(total_flops)
     return summary
 
 

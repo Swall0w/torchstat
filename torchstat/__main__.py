@@ -10,7 +10,7 @@ def arg():
                         help='Module file.')
     parser.add_argument('--model', '-m', type=str,
                         help='Model name')
-    parser.add_argument('--size', '-s', type=str, default='3x244x244',
+    parser.add_argument('--size', '-s', type=str, default='3x224x224',
                         help='Input size. channels x height x width (default: 3x224x224)')
     return parser.parse_args()
 

@@ -47,6 +47,7 @@ class StatNode(object):
         self._parameter_quantity = 0
         self._inference_memory = 0
         self._MAdd = 0
+        self._Flops = 0
         self._duration = 0
         self._duration_percent = 0
 
@@ -136,6 +137,17 @@ class StatNode(object):
     @MAdd.setter
     def MAdd(self, MAdd):
         self._MAdd = MAdd
+
+    @property
+    def Flops(self):
+        total_Flops = self._Flops
+        for child in self.children:
+            total_Flops += child.Flops
+        return total_Flops
+
+    @Flops.setter
+    def Flops(self, Flops):
+        self._Flops = Flops
 
     @property
     def duration(self):
