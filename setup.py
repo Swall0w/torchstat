@@ -5,7 +5,7 @@ from os import path
 
 from setuptools import find_packages, setup
 
-package_name = "mapy"
+package_name = "torchstat"
 root_dir = path.abspath(path.dirname(__file__))
 
 
@@ -33,7 +33,7 @@ with open('README.md', encoding='utf-8') as f:
 setup(
     name=package_name,
     version=version,
-    description="mapy: The Pytorch Model Analyzer.",
+    description="torchstat: The Pytorch Model Analyzer.",
     long_description=long_description,
     author=author,
     url=url,
@@ -47,6 +47,6 @@ setup(
     test_suite='tests',
     entry_points="""
     [console_scripts]
-    mapy = mapy.__main__:main
+    torchstat = torchstat.__main__:main
     """,
     )

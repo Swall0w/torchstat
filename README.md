@@ -1,4 +1,4 @@
-# model_analyzer.pytorch
+# torchstat
 
 ## Features
 - [ ] FLOPs
