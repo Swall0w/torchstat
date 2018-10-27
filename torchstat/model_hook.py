@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 
 from torchstat import compute_madd
+from torchstat import compute_flops
 
 
 class ModelHook(object):
@@ -34,6 +35,7 @@ class ModelHook(object):
         module.register_buffer('inference_memory', torch.zeros(1).long())
         module.register_buffer('MAdd', torch.zeros(1).long())
         module.register_buffer('duration', torch.zeros(1).float())
+        module.register_buffer('Flops', torch.zeros(1).long())
 
     def _sub_module_call_hook(self):
         def wrap_call(module, *input, **kwargs):
@@ -67,12 +69,17 @@ class ModelHook(object):
 
             if len(input) == 1:
                 madd = compute_madd(module, input[0], output)
+                flops = compute_flops(module, input[0], output)
             elif len(input) > 1:
                 madd = compute_madd(module, input, output)
+                flops = compute_flops(module, input, output)
             else:  # error
                 madd = 0
+                flops = 0
             module.MAdd = torch.from_numpy(
                 np.array([madd], dtype=np.int64))
+            module.Flops = torch.from_numpy(
+                np.array([flops], dtype=np.int64))
             return output
 
         for module in self._model.modules():
