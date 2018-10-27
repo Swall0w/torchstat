@@ -1,15 +1,19 @@
 # torchstat
 
 ## Features
-- [ ] FLOPs
+- [x] FLOPs
 - [x] Number of Parameters
-- [ ] Model sammary (Darknet-like?)
 - [x] Total memory
 - [x] Madds
-- [ ] Input Size
+- [ ] Model sammary (Darknet-like?)
+- [ ] Input Size (MB, Shape)
+- [ ] Output Size (Shape)
 - [ ] Forward/backward pass size
 - [ ] Params Size
 - [ ] Estimated Total Size
+- [ ] Report rounded score
+- [ ] Report score table
+- [ ] Report layer-wise score
 
 
 Inspired by these wonderful implementations.
