@@ -35,6 +35,7 @@ setup(
     version=version,
     description="torchstat: The Pytorch Model Analyzer.",
     long_description=long_description,
+    long_description_content_type='text/markdown',
     author=author,
     url=url,
 
