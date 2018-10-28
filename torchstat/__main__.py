@@ -30,6 +30,4 @@ def main():
         import sys; sys.exit()
 
     input_size = tuple(int(x) for x in args.size.split('x'))
-    report = stat(model, input_size, query_granularity=1)
-
-    print(report)
+    stat(model, input_size, query_granularity=1)

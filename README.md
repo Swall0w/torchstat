@@ -49,11 +49,11 @@ from torchstat import stat
 from torchvision.models as models
 
 model = models.resnet18()
-report = stat(model, (3, 224, 224))
-print(report)
+stat(model, (3, 224, 224))
 ```
 
 ## Features
+**Note**: These features work only nn.Module. Modules in torch.nn.functional are not supported yet.
 - [x] FLOPs
 - [x] Number of Parameters
 - [x] Total memory

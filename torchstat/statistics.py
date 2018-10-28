@@ -44,13 +44,24 @@ def convert_leaf_modules_to_stat_tree(leaf_modules):
     return StatTree(root_node)
 
 
-def stat(model, input_size, query_granularity=1):
-    assert isinstance(model, nn.Module)
-    assert isinstance(input_size, (tuple, list)) and len(input_size) == 3
+class ModelStat(object):
+    def __init__(self, model, input_size, query_granularity=1):
+        assert isinstance(model, nn.Module)
+        assert isinstance(input_size, (tuple, list)) and len(input_size) == 3
+        self._model = model
+        self._input_size = input_size
+        self._query_granularity = query_granularity
 
-    model_hook = ModelHook(model, input_size)
-    leaf_modules = model_hook.retrieve_leaf_modules()
-    stat_tree = convert_leaf_modules_to_stat_tree(leaf_modules)
-    collected_nodes = stat_tree.get_collected_stat_nodes(query_granularity)
-    report = report_format(collected_nodes)
-    return report
+
+    def show_report(self):
+        model_hook = ModelHook(self._model, self._input_size)
+        leaf_modules = model_hook.retrieve_leaf_modules()
+        stat_tree = convert_leaf_modules_to_stat_tree(leaf_modules)
+        collected_nodes = stat_tree.get_collected_stat_nodes(self._query_granularity)
+        report = report_format(collected_nodes)
+        print(report)
+
+
+def stat(model, input_size, query_granularity=1):
+    ms = ModelStat(model, input_size, query_granularity)
+    ms.show_report()

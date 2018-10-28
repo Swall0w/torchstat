@@ -25,5 +25,4 @@ class Net(nn.Module):
 
 if __name__ == '__main__':
     model = Net()
-    report = stat(model, (3, 224, 224))
-    print(report)
+    stat(model, (3, 224, 224))
