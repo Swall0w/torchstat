@@ -11,7 +11,13 @@ This tools can show
 * Memory usage
 
 ## Installing
-Install and update using **setup.py** after cloning this repository.
+There're two ways to install torchstat into your environment.
+* Install it via pip.
+```bash
+$ pip install torchstat
+```
+
+* Install and update using **setup.py** after cloning this repository.
 ```bash
 $ python3 setup.py install
 ```
