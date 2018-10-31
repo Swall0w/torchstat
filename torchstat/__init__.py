@@ -11,4 +11,4 @@ from torchstat.reporter import report_format
 from torchstat.statistics import stat, ModelStat
 
 __all__ = ['report_format', 'StatTree', 'StatNode', 'compute_madd',
-           'compute_flops', 'ModelHook', 'stat','ModelStat', '__main__']
+           'compute_flops', 'ModelHook', 'stat', 'ModelStat', '__main__']

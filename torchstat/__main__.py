@@ -27,7 +27,8 @@ def main():
         print(f'Tried to import {args.model} from {args.file}. but failed.')
         traceback.print_exc()
 
-        import sys; sys.exit()
+        import sys
+        sys.exit()
 
     input_size = tuple(int(x) for x in args.size.split('x'))
     stat(model, input_size, query_granularity=1)

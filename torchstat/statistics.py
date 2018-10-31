@@ -52,7 +52,6 @@ class ModelStat(object):
         self._input_size = input_size
         self._query_granularity = query_granularity
 
-
     def show_report(self):
         model_hook = ModelHook(self._model, self._input_size)
         leaf_modules = model_hook.retrieve_leaf_modules()

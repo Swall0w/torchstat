@@ -85,24 +85,24 @@ class StatNode(object):
             return self._input_shape
         else:
             return self.children[0].input_shape
-    
+
     @input_shape.setter
     def input_shape(self, input_shape):
         assert isinstance(input_shape, (list, tuple))
         self._input_shape = input_shape
-        
+
     @property
     def output_shape(self):
         if len(self.children) == 0:  # leaf
             return self._output_shape
         else:
             return self.children[-1].output_shape
-    
+
     @output_shape.setter
     def output_shape(self, output_shape):
         assert isinstance(output_shape, (list, tuple))
         self._output_shape = output_shape
-        
+
     @property
     def parameter_quantity(self):
         # return self.parameters_quantity
@@ -110,7 +110,7 @@ class StatNode(object):
         for child in self.children:
             total_parameter_quantity += child.parameter_quantity
         return total_parameter_quantity
-    
+
     @parameter_quantity.setter
     def parameter_quantity(self, parameter_quantity):
         assert parameter_quantity >= 0
