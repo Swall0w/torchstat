@@ -58,7 +58,7 @@ def compute_BatchNorm2d_flops(module, inp, out):
 
 
 def compute_ReLU_flops(module, inp, out):
-    assert isinstance(module, (nn.ReLU, nn.ReLU6))
+    assert isinstance(module, (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU))
     batch_size = inp.size()[0]
     active_elements_count = batch_size
 
