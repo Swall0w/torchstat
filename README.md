@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Swall0w/torchstat.svg?branch=master)](https://travis-ci.org/Swall0w/torchstat)
+
 # torchstat
 This is a lightweight neural network analyzer based on PyTorch.
 It is designed to make building your networks quick and easy, with the ability to debug them.
