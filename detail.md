@@ -10,6 +10,6 @@
 |MaxPool2d|ok|ok|
 |ReLU|ok|ok|
 |ReLU6|ok|ok|
-|LeaklyReLU|ok|ok|
+|LeaklyReLU|ok||
 |PReLU|ok|ok|
 |ELU|ok|ok|
