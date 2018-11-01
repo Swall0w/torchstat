@@ -54,7 +54,7 @@ You'll see usage information and a list of options you can use with the command.
 ### Module
 ```python
 from torchstat import stat
-from torchvision.models as models
+import torchvision.models as models
 
 model = models.resnet18()
 stat(model, (3, 224, 224))
