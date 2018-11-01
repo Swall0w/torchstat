@@ -8,7 +8,7 @@ def compute_memory(module, inp, out):
         return compute_ReLU_memory(module, inp, out)
     else:
         print(f"[Memory]: {type(module).__name__} is not supported!")
-        return 0
+        return (0, 0)
     pass
 
 
@@ -21,7 +21,7 @@ def compute_ReLU_memory(module, inp, out):
     return (mread, mwrite)
 
 
-#def compute_Conv2d_flops(module, inp, out):
+# def compute_Conv2d_flops(module, inp, out):
 #    # Can have multiple inputs, getting the first one
 #    assert isinstance(module, nn.Conv2d)
 #    assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())

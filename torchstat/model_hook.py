@@ -44,7 +44,7 @@ class ModelHook(object):
             assert module.__class__ in self._origin_call
 
             # Itemsize for memory
-            itemsize = input[0].numpy().itemsize
+            itemsize = input[0].detach().numpy().itemsize
 
             start = time.time()
             output = self._origin_call[module.__class__](module, *input, **kwargs)
@@ -88,9 +88,8 @@ class ModelHook(object):
                 np.array([madd], dtype=np.int64))
             module.Flops = torch.from_numpy(
                 np.array([flops], dtype=np.int64))
-            Memory = np.array(Memory, dtype=np.int32)
-            module.Memory = torch.from_numpy(
-                Memory * itemsize)
+            Memory = np.array(Memory, dtype=np.int32) * itemsize
+            module.Memory = torch.from_numpy(Memory)
 
             return output
 
