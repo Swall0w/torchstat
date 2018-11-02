@@ -12,6 +12,8 @@ def compute_memory(module, inp, out):
         return compute_BatchNorm2d_memory(module, inp, out)
     elif isinstance(module, nn.Linear):
         return compute_Linear_memory(module, inp, out)
+    elif isinstance(module, (nn.AvgPool2d, nn.MaxPool2d)):
+        return compute_Pool2d_memory(module, inp, out)
     else:
         print(f"[Memory]: {type(module).__name__} is not supported!")
         return (0, 0)
@@ -63,4 +65,13 @@ def compute_Linear_memory(module, inp, out):
     mread = batch_size * (inp.size()[1:].numel() + num_params(module))
     mwrite = out.size().numel()
 
+    return (mread, mwrite)
+
+
+def compute_Pool2d_memory(module, inp, out):
+    assert isinstance(module, (nn.MaxPool2d, nn.AvgPool2d))
+    assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
+    batch_size = inp.size()[0]
+    mread = batch_size * inp.size()[1:].numel()
+    mwrite = batch_size * out.size()[1:].numel()
     return (mread, mwrite)
