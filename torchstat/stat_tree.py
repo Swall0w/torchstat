@@ -47,6 +47,7 @@ class StatNode(object):
         self._parameter_quantity = 0
         self._inference_memory = 0
         self._MAdd = 0
+        self._Memory = (0, 0)
         self._Flops = 0
         self._duration = 0
         self._duration_percent = 0
@@ -148,6 +149,20 @@ class StatNode(object):
     @Flops.setter
     def Flops(self, Flops):
         self._Flops = Flops
+
+    @property
+    def Memory(self):
+        total_Memory = self._Memory
+        for child in self.children:
+            total_Memory[0] += child.Memory[0]
+            total_Memory[1] += child.Memory[1]
+            print(total_Memory)
+        return total_Memory
+
+    @Memory.setter
+    def Memory(self, Memory):
+        assert isinstance(Memory, (list, tuple))
+        self._Memory = Memory
 
     @property
     def duration(self):

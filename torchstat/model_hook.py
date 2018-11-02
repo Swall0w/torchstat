@@ -6,6 +6,7 @@ import torch.nn as nn
 
 from torchstat import compute_madd
 from torchstat import compute_flops
+from torchstat import compute_memory
 
 
 class ModelHook(object):
@@ -36,10 +37,14 @@ class ModelHook(object):
         module.register_buffer('MAdd', torch.zeros(1).long())
         module.register_buffer('duration', torch.zeros(1).float())
         module.register_buffer('Flops', torch.zeros(1).long())
+        module.register_buffer('Memory', torch.zeros(2).long())
 
     def _sub_module_call_hook(self):
         def wrap_call(module, *input, **kwargs):
             assert module.__class__ in self._origin_call
+
+            # Itemsize for memory
+            itemsize = input[0].detach().numpy().itemsize
 
             start = time.time()
             output = self._origin_call[module.__class__](module, *input, **kwargs)
@@ -70,16 +75,22 @@ class ModelHook(object):
             if len(input) == 1:
                 madd = compute_madd(module, input[0], output)
                 flops = compute_flops(module, input[0], output)
+                Memory = compute_memory(module, input[0], output)
             elif len(input) > 1:
                 madd = compute_madd(module, input, output)
                 flops = compute_flops(module, input, output)
+                Memory = compute_memory(module, input, output)
             else:  # error
                 madd = 0
                 flops = 0
+                Memory = (0, 0)
             module.MAdd = torch.from_numpy(
                 np.array([madd], dtype=np.int64))
             module.Flops = torch.from_numpy(
                 np.array([flops], dtype=np.int64))
+            Memory = np.array(Memory, dtype=np.int32) * itemsize
+            module.Memory = torch.from_numpy(Memory)
+
             return output
 
         for module in self._model.modules():

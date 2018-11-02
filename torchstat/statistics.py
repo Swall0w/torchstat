@@ -41,6 +41,7 @@ def convert_leaf_modules_to_stat_tree(leaf_modules):
                 node.MAdd = leaf_module.MAdd.numpy()[0]
                 node.Flops = leaf_module.Flops.numpy()[0]
                 node.duration = leaf_module.duration.numpy()[0]
+                node.Memory = leaf_module.Memory.numpy().tolist()
     return StatTree(root_node)
 
 
@@ -52,11 +53,15 @@ class ModelStat(object):
         self._input_size = input_size
         self._query_granularity = query_granularity
 
-    def show_report(self):
+    def _analyze_model(self):
         model_hook = ModelHook(self._model, self._input_size)
         leaf_modules = model_hook.retrieve_leaf_modules()
         stat_tree = convert_leaf_modules_to_stat_tree(leaf_modules)
         collected_nodes = stat_tree.get_collected_stat_nodes(self._query_granularity)
+        return collected_nodes
+
+    def show_report(self):
+        collected_nodes = self._analyze_model()
         report = report_format(collected_nodes)
         print(report)
 
