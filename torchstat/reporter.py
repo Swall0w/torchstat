@@ -40,16 +40,16 @@ def report_format(collected_nodes):
     df = pd.DataFrame(data)
     df.columns = ['module name', 'input shape', 'output shape',
                   'params', 'memory(MB)',
-                  'MAdd', 'duration', 'Flops', 'MemRead', 'MemWrite']
+                  'MAdd', 'duration', 'Flops', 'MemRead(B)', 'MemWrite(B)']
     df['duration[%]'] = df['duration'] / (df['duration'].sum() + 1e-7)
-    df['MemR+W(B)'] = df['MemRead'] + df['MemWrite']
+    df['MemR+W(B)'] = df['MemRead(B)'] + df['MemWrite(B)']
     total_parameters_quantity = df['params'].sum()
     total_memory = df['memory(MB)'].sum()
     total_operation_quantity = df['MAdd'].sum()
     total_flops = df['Flops'].sum()
     total_duration = df['duration[%]'].sum()
-    total_mread = df['MemRead'].sum()
-    total_mwrite = df['MemWrite'].sum()
+    total_mread = df['MemRead(B)'].sum()
+    total_mwrite = df['MemWrite(B)'].sum()
     total_memrw = df['MemR+W(B)'].sum()
     del df['duration']
 
@@ -58,7 +58,7 @@ def report_format(collected_nodes):
                           total_operation_quantity, total_flops,
                           total_duration, mread, mwrite, total_memrw],
                          index=['params', 'memory(MB)', 'MAdd', 'Flops', 'duration[%]',
-                                'MemRead', 'MemWrite', 'MemR+W(B)'],
+                                'MemRead(B)', 'MemWrite(B)', 'MemR+W(B)'],
                          name='total')
     df = df.append(total_df)
 
