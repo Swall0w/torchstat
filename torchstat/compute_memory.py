@@ -6,6 +6,8 @@ import numpy as np
 def compute_memory(module, inp, out):
     if isinstance(module, (nn.ReLU, nn.ReLU6, nn.ELU, nn.LeakyReLU)):
         return compute_ReLU_memory(module, inp, out)
+    elif isinstance(module, nn.PReLU):
+        return compute_PReLU_memory(module, inp, out)
     elif isinstance(module, nn.Conv2d):
         return compute_Conv2d_memory(module, inp, out)
     elif isinstance(module, nn.BatchNorm2d):
@@ -28,6 +30,15 @@ def compute_ReLU_memory(module, inp, out):
     assert isinstance(module, (nn.ReLU, nn.ReLU6, nn.ELU, nn.LeakyReLU))
     batch_size = inp.size()[0]
     mread = batch_size * inp.size()[1:].numel()
+    mwrite = batch_size * inp.size()[1:].numel()
+
+    return (mread, mwrite)
+
+
+def compute_PReLU_memory(module, inp, out):
+    assert isinstance(module, (nn.PReLU))
+    batch_size = inp.size()[0]
+    mread = batch_size * (inp.size()[1:].numel() + num_params(module))
     mwrite = batch_size * inp.size()[1:].numel()
 
     return (mread, mwrite)

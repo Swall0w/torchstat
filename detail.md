@@ -6,10 +6,10 @@
 |BatchNorm2d|ok|ok|ok|ok|
 |Linear|ok|ok|ok|ok|
 |UpSample|ok| |||
-|AvgPool2d|ok|ok|||
-|MaxPool2d|ok|ok|||
+|AvgPool2d|ok|ok|ok|ok|
+|MaxPool2d|ok|ok|ok|ok|
 |ReLU|ok|ok|ok|ok|
 |ReLU6|ok|ok|ok|ok|
 |LeaklyReLU|ok||ok|ok|
-|PReLU|ok|ok|||
+|PReLU|ok|ok|ok|ok|
 |ELU|ok|ok|ok|ok|
