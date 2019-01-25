@@ -49,8 +49,8 @@ class ModelStat(object):
     def __init__(self, model, input_size, query_granularity=1):
         assert isinstance(model, nn.Module)
         assert (
-            isinstance(input_size, (tuple, list))
-            and (len(input_size) == 3 or len(input_size) == 4))
+            isinstance(input_size, (tuple, list)) and
+            (len(input_size) == 3 or len(input_size) == 4))
         self._model = model
         self._input_size = input_size
         self._query_granularity = query_granularity
