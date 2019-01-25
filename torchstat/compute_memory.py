@@ -126,3 +126,4 @@ def compute_Pool3d_memory(module, inp, out):
     mread = batch_size * inp.size()[1:].numel()
     mwrite = batch_size * out.size()[1:].numel()
     return (mread, mwrite)
+    
