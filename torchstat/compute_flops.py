@@ -6,10 +6,16 @@ import numpy as np
 def compute_flops(module, inp, out):
     if isinstance(module, nn.Conv2d):
         return compute_Conv2d_flops(module, inp, out)
+    elif isinstance(module, nn.Conv3d):
+        return compute_Conv3d_flops(module, inp, out)
     elif isinstance(module, nn.BatchNorm2d):
         return compute_BatchNorm2d_flops(module, inp, out)
+    elif isinstance(module, nn.BatchNorm3d):
+        return compute_BatchNorm3d_flops(module, inp, out)
     elif isinstance(module, (nn.AvgPool2d, nn.MaxPool2d)):
         return compute_Pool2d_flops(module, inp, out)
+    elif isinstance(module, (nn.AvgPool3d, nn.MaxPool3d)):
+        return compute_Pool3d_flops(module, inp, out)
     elif isinstance(module, (nn.ReLU, nn.ReLU6, nn.PReLU, nn.ELU, nn.LeakyReLU)):
         return compute_ReLU_flops(module, inp, out)
     elif isinstance(module, nn.Upsample):
@@ -47,10 +53,45 @@ def compute_Conv2d_flops(module, inp, out):
     return total_flops
 
 
+def compute_Conv3d_flops(module, inp, out):
+    # Can have multiple inputs, getting the first one
+    assert isinstance(module, nn.Conv3d)
+    assert len(inp.size()) == 5 and len(inp.size()) == len(out.size())
+
+    batch_size = inp.size()[0]
+    in_c = inp.size()[1]
+    k_t, k_h, k_w = module.kernel_size
+    out_c, out_t, out_h, out_w = out.size()[1:]
+    groups = module.groups
+
+    filters_per_channel = out_c // groups
+    conv_per_position_flops = k_t * k_h * k_w * in_c * filters_per_channel
+    active_elements_count = batch_size * out_t * out_h * out_w
+
+    total_conv_flops = conv_per_position_flops * active_elements_count
+
+    bias_flops = 0
+    if module.bias is not None:
+        bias_flops = out_c * active_elements_count
+
+    total_flops = total_conv_flops + bias_flops
+    return total_flops
+
+
 def compute_BatchNorm2d_flops(module, inp, out):
     assert isinstance(module, nn.BatchNorm2d)
     assert len(inp.size()) == 4 and len(inp.size()) == len(out.size())
     in_c, in_h, in_w = inp.size()[1:]
+    batch_flops = np.prod(inp.shape)
+    if module.affine:
+        batch_flops *= 2
+    return batch_flops
+
+
+def compute_BatchNorm3d_flops(module, inp, out):
+    assert isinstance(module, nn.BatchNorm3d)
+    assert len(inp.size()) == 5 and len(inp.size()) == len(out.size())
+    in_c, in_t, in_h, in_w = inp.size()[1:]
     batch_flops = np.prod(inp.shape)
     if module.affine:
         batch_flops *= 2
@@ -74,11 +115,18 @@ def compute_Pool2d_flops(module, inp, out):
     return np.prod(inp.shape)
 
 
+def compute_Pool3d_flops(module, inp, out):
+    assert isinstance(module, nn.MaxPool3d) or isinstance(module, nn.AvgPool3d)
+    assert len(inp.size()) == 5 and len(inp.size()) == len(out.size())
+    return np.prod(inp.shape)
+
+
 def compute_Linear_flops(module, inp, out):
     assert isinstance(module, nn.Linear)
     assert len(inp.size()) == 2 and len(out.size()) == 2
     batch_size = inp.size()[0]
     return batch_size * inp.size()[1] * out.size()[1]
+
 
 def compute_Upsample_flops(module, inp, out):
     assert isinstance(module, nn.Upsample)
