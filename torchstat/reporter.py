@@ -40,7 +40,7 @@ def report_format(collected_nodes):
     df = pd.DataFrame(data)
     df.columns = ['module name', 'input shape', 'output shape',
                   'params', 'memory(MB)',
-                  'MAdd', 'duration', 'Flops', 'MemRead(B)', 'MemWrite(B)']
+                  'MAdd', 'duration', 'Mul', 'MemRead(B)', 'MemWrite(B)']
     df['duration[%]'] = df['duration'] / (df['duration'].sum() + 1e-7)
     df['MemR+W(B)'] = df['MemRead(B)'] + df['MemWrite(B)']
     total_parameters_quantity = df['params'].sum()

@@ -34,7 +34,7 @@ $ torchstat masato$ torchstat -f example.py -m Net
 [MAdd]: Dropout2d is not supported!
 [Flops]: Dropout2d is not supported!
 [Memory]: Dropout2d is not supported!
-      module name  input shape output shape     params memory(MB)           MAdd         Flops  MemRead(B)  MemWrite(B) duration[%]   MemR+W(B)
+      module name  input shape output shape     params memory(MB)           MAdd         Mul    MemRead(B)  MemWrite(B) duration[%]   MemR+W(B)
 0           conv1    3 224 224   10 220 220      760.0       1.85   72,600,000.0  36,784,000.0    605152.0    1936000.0      57.49%   2541152.0
 1           conv2   10 110 110   20 106 106     5020.0       0.86  112,360,000.0  56,404,720.0    504080.0     898880.0      26.62%   1402960.0
 2      conv2_drop   20 106 106   20 106 106        0.0       0.86            0.0           0.0         0.0          0.0       4.09%         0.0
