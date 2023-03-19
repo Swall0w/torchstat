@@ -54,13 +54,16 @@ def report_format(collected_nodes):
     del df['duration']
 
     # Add Total row
-    total_df = pd.Series([total_parameters_quantity, total_memory,
-                          total_operation_quantity, total_flops,
-                          total_duration, mread, mwrite, total_memrw],
-                         index=['params', 'memory(MB)', 'MAdd', 'Flops', 'duration[%]',
-                                'MemRead(B)', 'MemWrite(B)', 'MemR+W(B)'],
-                         name='total')
-    df = df.append(total_df)
+    total_df = pd.DataFrame([[total_parameters_quantity, total_memory,
+                              total_operation_quantity, total_flops,
+                              total_duration, mread, mwrite, total_memrw]],
+                            columns=['params', 'memory(MB)', 'MAdd', 'Flops', 'duration[%]',
+                                     'MemRead(B)', 'MemWrite(B)', 'MemR+W(B)'],
+                            index=['total'])
+    df = pd.concat([
+        df,
+        total_df
+    ])
 
     df = df.fillna(' ')
     df['memory(MB)'] = df['memory(MB)'].apply(
